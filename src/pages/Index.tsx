@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import ActivityTags from "@/components/ActivityTags";
 import MissionSection from "@/components/MissionSection";
 import EventsSection from "@/components/EventsSection";
 import PopularRoutes from "@/components/PopularRoutes";
@@ -12,7 +11,6 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
-        <ActivityTags />
         <MissionSection />
         <EventsSection />
         <PopularRoutes />

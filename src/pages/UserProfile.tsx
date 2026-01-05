@@ -290,7 +290,7 @@ const UserProfile = () => {
           </div>
           
           {/* User Tags */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap gap-2 mb-6 w-1/2">
             <Badge variant="secondary" className="text-sm">{user.age} y.o.</Badge>
             <Badge variant="secondary" className="text-sm">🌿 {user.membership}</Badge>
             <Badge variant="secondary" className="text-sm">🇩🇪 {user.location}</Badge>

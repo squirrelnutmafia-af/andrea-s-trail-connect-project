@@ -16,56 +16,54 @@ const HeroSection = () => {
   return (
     <section className="pt-28 md:pt-32 pb-8">
       <div className="section-container">
-        {/* Combined Hero Card */}
-        <div className="relative rounded-3xl overflow-hidden bg-muted h-[400px] md:h-[480px]">
-          {/* Background Image */}
-          <img
-            src={heroImage}
-            alt="Hikers on a mountain trail at sunrise"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
-          
-          {/* Content */}
-          <div className="relative h-full flex flex-col justify-between p-6 md:p-10">
-            {/* Top: Headline */}
-            <div className="max-w-xl space-y-4 animate-fade-in">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight">
-                Adventures are better with buddies
-              </h1>
-              <p className="text-base md:text-lg text-white/90 max-w-md leading-relaxed">
-                Join a non-profit community of outdoor lovers. Find hiking, climbing, cycling events or organise your own!
-              </p>
-            </div>
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center mb-8">
+          {/* Left Content */}
+          <div className="space-y-6 animate-fade-in">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-heading leading-tight">
+              Adventures are better with buddies
+            </h1>
+            <p className="text-lg text-body max-w-lg leading-relaxed">
+              Hiking Buddies is a non-profit community of outdoor and sport lovers. Join an upcoming hiking, climbing, cycling - you name it - event or organise your own and enjoy your adventures with like-minded people!
+            </p>
+          </div>
 
-            {/* Bottom: Activity Tags */}
-            <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
-              {activities.map((activity) => (
-                <a
-                  key={activity.name}
-                  href="#"
-                  className="group flex-shrink-0"
-                >
-                  <div className="relative w-28 h-28 md:w-36 md:h-36 rounded-2xl overflow-hidden bg-muted/50 backdrop-blur-sm border border-white/10">
-                    {activity.image ? (
-                      <img
-                        src={activity.image}
-                        alt={activity.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-white/20 to-white/5" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-2 md:p-3">
-                      <span className="text-white font-semibold text-xs md:text-sm">{activity.name}</span>
-                    </div>
-                  </div>
-                </a>
-              ))}
+          {/* Right Image */}
+          <div className="relative lg:h-[420px] h-[300px] animate-slide-in-right" style={{ animationDelay: "0.2s" }}>
+            <div className="absolute inset-0 rounded-3xl overflow-hidden bg-muted">
+              <img
+                src={heroImage}
+                alt="Hikers on a mountain trail at sunrise"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
+        </div>
+
+        {/* Activity Tags */}
+        <div className="grid grid-cols-5 gap-4">
+          {activities.map((activity) => (
+            <a
+              key={activity.name}
+              href="#"
+              className="group"
+            >
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted">
+                {activity.image ? (
+                  <img
+                    src={activity.image}
+                    alt={activity.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-muted to-accent" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-3">
+                  <span className="text-white font-semibold text-sm">{activity.name}</span>
+                </div>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>

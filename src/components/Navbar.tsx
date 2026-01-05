@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, Mountain } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -11,10 +11,8 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center transition-transform group-hover:scale-105">
-              <Mountain className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-heading">TrailMates</span>
+            <span className="text-2xl">🥾</span>
+            <span className="text-xl font-bold text-primary italic">Hiking Buddies</span>
           </a>
 
           {/* Desktop Navigation */}
@@ -26,15 +24,21 @@ const Navbar = () => {
               Routes
             </a>
             <a href="#" className="text-body hover:text-heading transition-colors font-medium">
-              Communities
+              Community
             </a>
-          </div>
-
-          {/* CTA Button */}
-          <div className="hidden md:block">
             <Button variant="default" size="default">
-              Add Event
+              Create event
             </Button>
+            <button className="p-2 text-body hover:text-heading transition-colors" aria-label="Search">
+              <Search className="w-5 h-5" />
+            </button>
+            <div className="w-9 h-9 rounded-full bg-muted overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -58,10 +62,10 @@ const Navbar = () => {
                 Routes
               </a>
               <a href="#" className="text-body hover:text-heading transition-colors font-medium py-2">
-                Communities
+                Community
               </a>
               <Button variant="default" className="w-full mt-2">
-                Add Event
+                Create event
               </Button>
             </div>
           </div>

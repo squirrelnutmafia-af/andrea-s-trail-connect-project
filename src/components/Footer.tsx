@@ -1,5 +1,3 @@
-import { Mountain } from "lucide-react";
-
 const Footer = () => {
   return (
     <footer className="bg-card border-t border-border py-12">
@@ -8,14 +6,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-2">
             <a href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-                <Mountain className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-bold text-heading">TrailMates</span>
+              <span className="text-2xl">🥾</span>
+              <span className="text-xl font-bold text-primary italic">Hiking Buddies</span>
             </a>
             <p className="text-body text-sm max-w-sm">
-              Connecting outdoor enthusiasts worldwide. Discover trails, join events, 
-              and make lasting connections on every adventure.
+              A non-profit community of outdoor and sport lovers. Join adventures with like-minded people worldwide.
             </p>
           </div>
 
@@ -23,9 +18,9 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-heading mb-4">Explore</h4>
             <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Routes</a></li>
               <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Events</a></li>
-              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Communities</a></li>
+              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Routes</a></li>
+              <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Community</a></li>
               <li><a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Activities</a></li>
             </ul>
           </div>
@@ -45,7 +40,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} TrailMates. All rights reserved.
+            © {new Date().getFullYear()} Hiking Buddies. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
             <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram">

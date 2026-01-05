@@ -258,7 +258,7 @@ const UserProfile = () => {
       <main className="pt-24 pb-16">
         <div className="section-container">
           {/* Profile Header Row */}
-          <div className="flex gap-8 mb-6">
+          <div className="flex gap-8 mb-6 p-6 border border-border rounded-xl">
             {/* Profile Header */}
             <div className="w-1/4">
               <div className="relative inline-block mb-4">

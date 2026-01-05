@@ -249,10 +249,10 @@ const UserProfile = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <main className="section-container py-8 md:py-12">
-        <div className="max-w-lg mx-auto">
+      <main className="pt-24 pb-16">
+        <div className="section-container">
           {/* Profile Header */}
-          <div className="text-center mb-6">
+          <div className="mb-6">
             <div className="relative inline-block mb-4">
               <div className="w-24 h-24 rounded-full bg-muted overflow-hidden">
                 <img 
@@ -270,7 +270,7 @@ const UserProfile = () => {
             </div>
             
             <h1 className="text-2xl font-bold text-foreground mb-1">{user.name}</h1>
-            <div className="flex items-center justify-center gap-2 text-sm">
+            <div className="flex items-center gap-2 text-sm">
               <span className="text-primary flex items-center gap-1">
                 <Footprints className="w-4 h-4" />
                 {user.badge}
@@ -284,7 +284,7 @@ const UserProfile = () => {
           </div>
           
           {/* User Tags */}
-          <div className="flex flex-wrap justify-center gap-2 mb-6 px-4">
+          <div className="flex flex-wrap gap-2 mb-6">
             <Badge variant="secondary" className="text-sm">{user.age} y.o.</Badge>
             <Badge variant="secondary" className="text-sm">🌿 {user.membership}</Badge>
             <Badge variant="secondary" className="text-sm">🇩🇪 {user.location}</Badge>
@@ -304,7 +304,7 @@ const UserProfile = () => {
           
           {/* Stats Section */}
           <div className="bg-card rounded-xl border border-border p-4 mb-6">
-            <div className="flex items-center justify-center gap-6 mb-4 text-sm">
+            <div className="flex items-center gap-6 mb-4 text-sm">
               <button 
                 onClick={() => setStatsTab("last-month")}
                 className={`${statsTab === "last-month" ? "text-foreground font-semibold" : "text-muted-foreground"}`}
@@ -325,7 +325,7 @@ const UserProfile = () => {
               </button>
             </div>
             
-            <div className="flex items-center justify-center gap-4 mb-4 text-sm">
+            <div className="flex items-center gap-4 mb-4 text-sm">
               <div className="flex items-center gap-1">
                 <Footprints className="w-4 h-4 text-muted-foreground" />
                 <span>Hiking | {currentStats.hiking}</span>
@@ -344,7 +344,7 @@ const UserProfile = () => {
               </div>
             </div>
             
-            <div className="flex items-center justify-center gap-6 mb-6 text-sm">
+            <div className="flex items-center gap-6 mb-6 text-sm">
               <div>
                 <span className="text-muted-foreground">Distance: </span>
                 <span className="font-semibold">{currentStats.distance}</span>
@@ -355,7 +355,7 @@ const UserProfile = () => {
               </div>
             </div>
             
-            <div className="flex items-end justify-center gap-3">
+            <div className="flex items-end gap-3">
               {difficultyStats.map((stat) => (
                 <StatsBar key={stat.level} level={stat.level} count={stat.count} maxCount={maxDifficultyCount} />
               ))}

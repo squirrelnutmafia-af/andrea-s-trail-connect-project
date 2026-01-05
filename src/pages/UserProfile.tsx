@@ -6,6 +6,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import activityHiking from "@/assets/activity-hiking.jpg";
+import activityClimbing from "@/assets/activity-climbing.jpg";
+import activityCycling from "@/assets/activity-cycling.jpg";
+import activityWater from "@/assets/activity-water.jpg";
+
+const activityTypes = [
+  { name: "Hiking", image: activityHiking },
+  { name: "Climbing", image: activityClimbing },
+  { name: "Cycling", image: activityCycling },
+  { name: "Water sports", image: activityWater },
+];
+
 // Trail difficulty badge component
 const DifficultyBadge = ({ level, className = "" }: { level: string; className?: string }) => {
   const colors: Record<string, string> = {
@@ -258,34 +270,59 @@ const UserProfile = () => {
       <main className="pt-24 pb-16">
         <div className="section-container">
           {/* Profile Header */}
-          <div className="mb-6">
-            <div className="relative inline-block mb-4">
-              <div className="w-24 h-24 rounded-full bg-muted overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" 
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <div className="relative inline-block mb-4">
+                <div className="w-24 h-24 rounded-full bg-muted overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" 
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center border-2 border-background">
+                  <Camera className="w-4 h-4 text-white" />
+                </div>
+                <button className="absolute -top-2 -right-8 p-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <Settings className="w-5 h-5" />
+                </button>
               </div>
-              <div className="absolute bottom-0 right-0 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center border-2 border-background">
-                <Camera className="w-4 h-4 text-white" />
+              
+              <h1 className="text-2xl font-bold text-foreground mb-1">{user.name}</h1>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-primary flex items-center gap-1">
+                  <Footprints className="w-4 h-4" />
+                  {user.badge}
+                </span>
+                <span className="text-muted-foreground">·</span>
+                <span className="text-muted-foreground flex items-center gap-1">
+                  <MessageSquare className="w-4 h-4" />
+                  {user.reviews} reviews
+                </span>
               </div>
-              <button className="absolute -top-2 -right-8 p-2 text-muted-foreground hover:text-foreground transition-colors">
-                <Settings className="w-5 h-5" />
-              </button>
             </div>
-            
-            <h1 className="text-2xl font-bold text-foreground mb-1">{user.name}</h1>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-primary flex items-center gap-1">
-                <Footprints className="w-4 h-4" />
-                {user.badge}
-              </span>
-              <span className="text-muted-foreground">·</span>
-              <span className="text-muted-foreground flex items-center gap-1">
-                <MessageSquare className="w-4 h-4" />
-                {user.reviews} reviews
-              </span>
+
+            {/* Activity Tags */}
+            <div className="grid grid-cols-4 gap-3">
+              {activityTypes.map((activity) => (
+                <a
+                  key={activity.name}
+                  href="#"
+                  className="group"
+                >
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-muted">
+                    <img
+                      src={activity.image}
+                      alt={activity.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-1.5">
+                      <span className="text-white font-medium text-xs">{activity.name}</span>
+                    </div>
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
           

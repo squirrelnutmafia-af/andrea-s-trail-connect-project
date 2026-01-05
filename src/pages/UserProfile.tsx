@@ -258,7 +258,7 @@ const UserProfile = () => {
       <main className="pt-24 pb-16">
         <div className="section-container">
           {/* Profile Header */}
-          <div className="mb-6">
+          <div className="mb-6 w-1/2">
             <div className="relative inline-block mb-4">
               <div className="w-24 h-24 rounded-full bg-muted overflow-hidden">
                 <img 

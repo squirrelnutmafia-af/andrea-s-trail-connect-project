@@ -206,6 +206,12 @@ const UserProfile = () => {
       location: "Hochstaufen (1771m)", 
       date: "June 2024" 
     },
+    { 
+      text: "Great experience hiking with Anna! Very well organized and she always makes sure everyone is safe. Highly recommend!", 
+      author: "Marcus", 
+      location: "Wendelstein (1838m)", 
+      date: "May 2024" 
+    },
   ];
   
   const activities = [

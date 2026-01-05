@@ -15,14 +15,14 @@ const ActivityTags = () => {
   return (
     <section className="py-8">
       <div className="section-container">
-        <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+        <div className="grid grid-cols-5 gap-4">
           {activities.map((activity) => (
             <a
               key={activity.name}
               href="#"
-              className="flex-shrink-0 group"
+              className="group"
             >
-              <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden bg-muted">
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted">
                 {activity.image ? (
                   <img
                     src={activity.image}

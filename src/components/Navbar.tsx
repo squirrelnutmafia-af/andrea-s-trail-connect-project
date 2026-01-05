@@ -32,13 +32,13 @@ const Navbar = () => {
             <button className="p-2 text-body hover:text-heading transition-colors" aria-label="Search">
               <Search className="w-5 h-5" />
             </button>
-            <div className="w-9 h-9 rounded-full bg-muted overflow-hidden">
+            <a href="/userprofile" className="w-9 h-9 rounded-full bg-muted overflow-hidden">
               <img 
                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" 
                 alt="Profile" 
                 className="w-full h-full object-cover"
               />
-            </div>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}

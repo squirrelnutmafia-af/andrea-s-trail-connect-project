@@ -17,7 +17,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-body hover:text-heading transition-colors font-medium">
+            <a href="/events" className="text-body hover:text-heading transition-colors font-medium">
               Events
             </a>
             <a href="#" className="text-body hover:text-heading transition-colors font-medium">
@@ -55,7 +55,7 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden pb-4 animate-fade-in">
             <div className="flex flex-col gap-4">
-              <a href="#" className="text-body hover:text-heading transition-colors font-medium py-2">
+              <a href="/events" className="text-body hover:text-heading transition-colors font-medium py-2">
                 Events
               </a>
               <a href="#" className="text-body hover:text-heading transition-colors font-medium py-2">

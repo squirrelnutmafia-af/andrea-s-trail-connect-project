@@ -260,7 +260,7 @@ const UserProfile = () => {
           {/* Profile Header Row */}
           <div className="flex gap-8 mb-6">
             {/* Profile Header */}
-            <div className="w-1/2">
+            <div className="w-1/4">
               <div className="relative inline-block mb-4">
                 <div className="w-24 h-24 rounded-full bg-muted overflow-hidden">
                   <img 

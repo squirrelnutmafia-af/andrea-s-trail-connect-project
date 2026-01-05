@@ -1,116 +1,93 @@
-import { MapPin, Clock, TrendingUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import routeBavaria from "@/assets/route-bavaria.jpg";
 import routeDolomites from "@/assets/route-dolomites.jpg";
 import routeSwissAlps from "@/assets/route-swiss-alps.jpg";
+import routeLakeDistrict from "@/assets/route-lakedistrict.jpg";
 import routePyrenees from "@/assets/route-pyrenees.jpg";
-import routeNorway from "@/assets/route-norway.jpg";
-import routeScotland from "@/assets/route-scotland.jpg";
-import routePatagonia from "@/assets/route-patagonia.jpg";
+import routeTyrol from "@/assets/route-tyrol.jpg";
 
 const routes = [
   {
-    name: "Tre Cime di Lavaredo",
-    location: "Dolomites, Italy",
-    difficulty: "Moderate",
-    duration: "4-5 hours",
+    name: "Bavaria, Germany",
+    routes: 823,
+    image: routeBavaria,
+  },
+  {
+    name: "Dolomites, Italy",
+    routes: 342,
     image: routeDolomites,
   },
   {
-    name: "Oeschinensee Loop",
-    location: "Swiss Alps, Switzerland",
-    difficulty: "Easy",
-    duration: "3 hours",
+    name: "Swiss Alps",
+    routes: 912,
     image: routeSwissAlps,
   },
   {
-    name: "Cirque de Gavarnie",
-    location: "Pyrenees, France",
-    difficulty: "Moderate",
-    duration: "5-6 hours",
+    name: "Lake District, England",
+    routes: 456,
+    image: routeLakeDistrict,
+  },
+  {
+    name: "Pyrenees, France",
+    routes: 287,
     image: routePyrenees,
   },
   {
-    name: "Trolltunga Trail",
-    location: "Hordaland, Norway",
-    difficulty: "Challenging",
-    duration: "10-12 hours",
-    image: routeNorway,
-  },
-  {
-    name: "Ben Nevis Summit",
-    location: "Scottish Highlands, UK",
-    difficulty: "Challenging",
-    duration: "7-9 hours",
-    image: routeScotland,
-  },
-  {
-    name: "Torres del Paine W Trek",
-    location: "Patagonia, Chile",
-    difficulty: "Multi-day",
-    duration: "4-5 days",
-    image: routePatagonia,
+    name: "Tyrol, Austria",
+    routes: 534,
+    image: routeTyrol,
   },
 ];
 
-const difficultyColors: Record<string, string> = {
-  Easy: "bg-emerald-100 text-emerald-700",
-  Moderate: "bg-amber-100 text-amber-700",
-  Challenging: "bg-orange-100 text-orange-700",
-  "Multi-day": "bg-purple-100 text-purple-700",
-};
-
 const PopularRoutes = () => {
   return (
-    <section className="section-padding bg-secondary/20">
+    <section className="section-padding bg-background">
       <div className="section-container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-heading mb-4">
-            Popular Routes
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-heading">
+            Explore hiking routes
           </h2>
-          <p className="text-body max-w-2xl mx-auto">
-            Explore breathtaking trails handpicked by our community. From scenic day hikes to epic multi-day adventures.
-          </p>
+          <a
+            href="#"
+            className="hidden sm:flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+          >
+            Explore more routes
+            <ArrowRight className="w-4 h-4" />
+          </a>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
           {routes.map((route, index) => (
-            <article
+            <a
               key={route.name}
-              className="group bg-card rounded-2xl overflow-hidden border border-border card-hover animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              href="#"
+              className="flex-shrink-0 group animate-fade-in"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative w-32 h-40 md:w-36 md:h-44 rounded-2xl overflow-hidden">
                 <img
                   src={route.image}
                   alt={route.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute top-4 left-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${difficultyColors[route.difficulty]}`}>
-                    {route.difficulty}
-                  </span>
-                </div>
               </div>
-              
-              <div className="p-5 space-y-3">
-                <h3 className="font-bold text-lg text-heading group-hover:text-primary transition-colors">
+              <div className="mt-2 space-y-0.5">
+                <h3 className="font-semibold text-heading text-sm group-hover:text-primary transition-colors">
                   {route.name}
                 </h3>
-                
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    <span>{route.location}</span>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Clock className="w-4 h-4" />
-                  <span>{route.duration}</span>
-                </div>
+                <p className="text-xs text-muted-foreground">{route.routes} routes</p>
               </div>
-            </article>
+            </a>
           ))}
         </div>
+
+        <a
+          href="#"
+          className="sm:hidden flex items-center justify-center gap-2 text-primary font-semibold mt-6 border-t border-border pt-4"
+        >
+          Explore more routes
+          <ArrowRight className="w-4 h-4" />
+        </a>
       </div>
     </section>
   );

@@ -284,9 +284,9 @@ const UserProfile = () => {
           {/* Profile Header Row */}
           <div className="mb-6 p-6 border border-border rounded-xl">
             {/* Profile Header Row */}
-            <div className="gap-8 flex items-end justify-start mb-6">
+            <div className="gap-6 flex items-start justify-start mb-6">
               {/* Profile Header */}
-              <div className="w-1/4">
+              <div className="shrink-0">
                 <div className="relative inline-block mb-4">
                   <div className="w-24 h-24 rounded-full bg-muted overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face" alt="Profile" className="w-full h-full object-cover" />
@@ -314,7 +314,7 @@ const UserProfile = () => {
               </div>
               
               {/* User Tags */}
-              <div className="flex-wrap w-3/4 content-start gap-[8px] flex-row flex items-center justify-start">
+              <div className="flex-1 flex flex-wrap content-start gap-2">
                 <Badge variant="secondary" className="text-sm">{user.age} y.o.</Badge>
                 <Badge variant="secondary" className="text-sm">🌿 {user.membership}</Badge>
                 <Badge variant="secondary" className="text-sm">🇩🇪 {user.location}</Badge>

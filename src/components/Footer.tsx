@@ -1,7 +1,50 @@
+import { Logos3 } from "@/components/ui/logos3";
+
+const partnerLogos = [
+  {
+    id: "partner-1",
+    description: "Patagonia",
+    image: "https://upload.wikimedia.org/wikipedia/commons/1/1b/Patagonia_%28Unternehmen%29_logo.svg",
+    className: "h-6 w-auto opacity-70 hover:opacity-100 transition-opacity",
+  },
+  {
+    id: "partner-2",
+    description: "The North Face",
+    image: "https://upload.wikimedia.org/wikipedia/commons/e/e9/The_North_Face_logo.svg",
+    className: "h-8 w-auto opacity-70 hover:opacity-100 transition-opacity",
+  },
+  {
+    id: "partner-3",
+    description: "REI",
+    image: "https://upload.wikimedia.org/wikipedia/commons/9/9e/REI_logo.svg",
+    className: "h-8 w-auto opacity-70 hover:opacity-100 transition-opacity",
+  },
+  {
+    id: "partner-4",
+    description: "Salomon",
+    image: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Salomon_logo.svg",
+    className: "h-6 w-auto opacity-70 hover:opacity-100 transition-opacity",
+  },
+  {
+    id: "partner-5",
+    description: "Arc'teryx",
+    image: "https://upload.wikimedia.org/wikipedia/commons/4/41/Arc%27teryx-logo.svg",
+    className: "h-8 w-auto opacity-70 hover:opacity-100 transition-opacity",
+  },
+  {
+    id: "partner-6",
+    description: "Osprey",
+    image: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Osprey_logo.svg",
+    className: "h-6 w-auto opacity-70 hover:opacity-100 transition-opacity",
+  },
+];
+
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border py-12">
-      <div className="section-container">
+    <footer className="bg-card border-t border-border">
+      <Logos3 heading="Our Partners & Sponsors" logos={partnerLogos} />
+      
+      <div className="section-container py-12">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="md:col-span-2">

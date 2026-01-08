@@ -20,7 +20,7 @@ const Navbar = () => {
             <a href="/events" className="text-body hover:text-heading transition-colors font-medium">
               Events
             </a>
-            <a href="#" className="text-body hover:text-heading transition-colors font-medium">
+            <a href="/routes" className="text-body hover:text-heading transition-colors font-medium">
               Routes
             </a>
             <a href="#" className="text-body hover:text-heading transition-colors font-medium">

@@ -26,7 +26,14 @@ const Navbar = () => {
             <a href="#" className="text-body hover:text-heading transition-colors font-medium">
               Community
             </a>
-            <Button variant="default" size="default">
+            <Button 
+              variant="default" 
+              size="default"
+              className="w-[324px] pr-20 text-white"
+              style={{
+                background: 'oklch(0.1487 0.6538 250.307)'
+              }}
+            >
               Create event
             </Button>
             <button className="p-2 text-body hover:text-heading transition-colors" aria-label="Search">

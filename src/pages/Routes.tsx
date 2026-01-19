@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Map } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -10,14 +9,63 @@ import { ActiveFilters } from '@/components/routes/ActiveFilters';
 import { SortDropdown } from '@/components/routes/SortDropdown';
 import { EmptyState } from '@/components/routes/EmptyState';
 import { MobileFilterDrawer } from '@/components/routes/MobileFilterDrawer';
+import { RouteDetails } from '@/components/details';
 import { useRouteFilters } from '@/hooks/useRouteFilters';
 import { mockRoutes } from '@/data/mockRoutes';
 import { HikingRoute } from '@/types/route';
 
+// Mock data for route details
+const mockCreator = {
+  name: 'Alpine Guide Max',
+  badge: 'Certified Guide',
+  avatarUrl: '',
+};
+
+const mockPastEvents = [
+  {
+    id: '1',
+    date: 'April 15, 2024',
+    participantCount: 12,
+    organizerName: 'John Doe',
+    organizerAvatarUrl: '',
+  },
+  {
+    id: '2',
+    date: 'March 22, 2024',
+    participantCount: 8,
+    organizerName: 'Sarah Smith',
+    organizerAvatarUrl: '',
+  },
+  {
+    id: '3',
+    date: 'February 10, 2024',
+    participantCount: 15,
+    organizerName: 'Mike Johnson',
+    organizerAvatarUrl: '',
+  },
+];
+
+const mockDiscussion = [
+  {
+    id: '1',
+    author: 'Victor',
+    authorAvatarUrl: '',
+    content: 'Do you think winter hiking boots or lighter trail running shoes would be better for this trek?',
+    timeAgo: '1d ago',
+  },
+  {
+    id: '2',
+    author: 'Anna',
+    authorAvatarUrl: '',
+    content: 'I only carry some clothes and necessary stuff, in total less than 4 kilos.',
+    timeAgo: '1d ago',
+  },
+];
+
 const Routes = () => {
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRoute, setSelectedRoute] = useState<HikingRoute | null>(null);
+  const [detailRoute, setDetailRoute] = useState<HikingRoute | null>(null);
 
   const {
     filters,
@@ -41,8 +89,20 @@ const Routes = () => {
   };
 
   const handleViewDetails = (route: HikingRoute) => {
-    navigate(`/routes/${route.id}`);
+    setDetailRoute(route);
   };
+
+  const handleCloseDetails = () => {
+    setDetailRoute(null);
+  };
+
+  // Generate gallery images from the same route image for demo
+  const galleryImages = detailRoute ? [
+    { src: detailRoute.imageUrl, alt: detailRoute.name },
+    { src: detailRoute.imageUrl, alt: detailRoute.name },
+    { src: detailRoute.imageUrl, alt: detailRoute.name },
+    { src: detailRoute.imageUrl, alt: detailRoute.name },
+  ] : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -154,6 +214,21 @@ const Routes = () => {
       </main>
 
       <Footer />
+
+      {/* Route Details Modal */}
+      {detailRoute && (
+        <RouteDetails
+          route={detailRoute}
+          galleryImages={galleryImages}
+          creator={mockCreator}
+          pastEvents={mockPastEvents}
+          discussion={mockDiscussion}
+          totalComments={5}
+          open={!!detailRoute}
+          onClose={handleCloseDetails}
+          onCreateEvent={() => console.log('Create event for route:', detailRoute.name)}
+        />
+      )}
     </div>
   );
 };

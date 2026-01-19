@@ -39,7 +39,8 @@ interface RouteDetailsProps {
     timeAgo: string;
   }[];
   totalComments?: number;
-  onBack?: () => void;
+  open: boolean;
+  onClose: () => void;
   onCreateEvent?: () => void;
 }
 
@@ -50,7 +51,8 @@ export const RouteDetails = ({
   pastEvents,
   discussion,
   totalComments,
-  onBack,
+  open,
+  onClose,
   onCreateEvent,
 }: RouteDetailsProps) => {
   const quickStats = [
@@ -189,8 +191,8 @@ export const RouteDetails = ({
       sidebarListSection={sidebarListSection}
       discussion={discussion}
       totalComments={totalComments}
-      onBack={onBack}
-      backLabel="Back to routes"
+      open={open}
+      onClose={onClose}
     />
   );
 };

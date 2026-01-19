@@ -99,19 +99,20 @@ export const DetailViewLayout = ({
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent 
-        className="fixed inset-0 max-w-none w-full h-full rounded-none border-0 p-0 overflow-y-auto bg-background translate-x-0 translate-y-0 left-0 top-0"
+        className="fixed inset-0 max-w-none w-full h-full rounded-none border-0 p-0 bg-background translate-x-0 translate-y-0 left-0 top-0"
         hideCloseButton
       >
-        {/* Close Button */}
+        {/* Close Button - outside scrollable area */}
         <button
           onClick={onClose}
-          className="fixed top-4 right-4 z-50 p-2 rounded-full bg-card border border-border hover:bg-muted transition-colors"
+          className="absolute top-4 right-4 z-50 p-2 rounded-full bg-card border border-border hover:bg-muted transition-colors"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
         </button>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12">
+        <div className="h-full overflow-y-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] xl:grid-cols-[1fr_320px] gap-6 lg:gap-8">
               {/* Main Content */}
               <div className="space-y-6 min-w-0">
@@ -312,6 +313,7 @@ export const DetailViewLayout = ({
               </aside>
             </div>
           </div>
+        </div>
         </DialogContent>
     </Dialog>
   );

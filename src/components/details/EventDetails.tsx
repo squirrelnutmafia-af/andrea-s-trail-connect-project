@@ -62,7 +62,8 @@ interface EventDetailsProps {
     timeAgo: string;
   }[];
   totalComments?: number;
-  onBack?: () => void;
+  open: boolean;
+  onClose: () => void;
   onJoinEvent?: () => void;
 }
 
@@ -85,7 +86,8 @@ export const EventDetails = ({
   maxParticipants,
   discussion,
   totalComments,
-  onBack,
+  open,
+  onClose,
   onJoinEvent,
 }: EventDetailsProps) => {
   const spotsLeft = maxParticipants - participants.length;
@@ -199,8 +201,8 @@ export const EventDetails = ({
       sidebarListSection={sidebarListSection}
       discussion={discussion}
       totalComments={totalComments}
-      onBack={onBack}
-      backLabel="Back to events"
+      open={open}
+      onClose={onClose}
     />
   );
 };

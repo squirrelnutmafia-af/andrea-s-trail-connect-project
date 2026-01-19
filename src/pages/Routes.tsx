@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Map } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -14,6 +15,7 @@ import { mockRoutes } from '@/data/mockRoutes';
 import { HikingRoute } from '@/types/route';
 
 const Routes = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRoute, setSelectedRoute] = useState<HikingRoute | null>(null);
 
@@ -39,8 +41,7 @@ const Routes = () => {
   };
 
   const handleViewDetails = (route: HikingRoute) => {
-    // In the future, this could navigate to a route detail page
-    console.log('View details for:', route.name);
+    navigate(`/routes/${route.id}`);
   };
 
   return (

@@ -115,16 +115,16 @@ export const DetailViewLayout = ({
             <X className="h-5 w-5" />
           </button>
 
-          <div className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] xl:grid-cols-[1fr_320px] gap-6 lg:gap-8">
               {/* Main Content */}
-              <div className="space-y-6">
+              <div className="space-y-6 min-w-0">
                 {/* Gallery + Header Row */}
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
                   {/* Gallery */}
-                  <div className="flex-shrink-0 space-y-3">
+                  <div className="flex-shrink-0 space-y-3 w-full lg:w-64 xl:w-72">
                     {/* Main Image */}
-                    <div className="w-full md:w-72 h-64 md:h-72 rounded-lg overflow-hidden">
+                    <div className="w-full h-48 sm:h-64 lg:h-64 xl:h-72 rounded-lg overflow-hidden">
                       <img
                         src={mainImage}
                         alt={title}
@@ -167,7 +167,7 @@ export const DetailViewLayout = ({
                   </div>
 
                   {/* Header Info */}
-                  <div className="flex-1 space-y-4">
+                  <div className="flex-1 min-w-0 space-y-3 sm:space-y-4">
                     {(dateLabel || timeLabel) && (
                       <div className="text-sm text-foreground">
                         <p className="font-semibold">{dateLabel}</p>
@@ -175,37 +175,37 @@ export const DetailViewLayout = ({
                       </div>
                     )}
 
-                    <h1 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground leading-tight">
                       {title}
                     </h1>
 
                     {/* Quick Stats */}
-                    <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm">
+                    <div className="flex flex-wrap gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-2 text-sm">
                       {quickStats.map((stat, index) => (
-                        <div key={index}>
+                        <div key={index} className="min-w-0">
                           <span className="text-muted-foreground">{stat.label}</span>
-                          <p className="font-medium text-foreground">{stat.value}</p>
+                          <p className="font-medium text-foreground truncate">{stat.value}</p>
                         </div>
                       ))}
                     </div>
 
                     {/* Action buttons */}
-                    <div className="flex items-center gap-3 pt-2">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-2">
                       <div className="flex gap-2">
-                        <Button variant="outline" size="icon" className="rounded-full">
+                        <Button variant="outline" size="icon" className="rounded-full h-9 w-9 sm:h-10 sm:w-10">
                           <span className="sr-only">Share</span>
                           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                           </svg>
                         </Button>
-                        <Button variant="outline" size="icon" className="rounded-full">
+                        <Button variant="outline" size="icon" className="rounded-full h-9 w-9 sm:h-10 sm:w-10">
                           <span className="sr-only">Save</span>
                           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                           </svg>
                         </Button>
                       </div>
-                      <Button onClick={onPrimaryAction} className="px-8">
+                      <Button onClick={onPrimaryAction} className="px-6 sm:px-8 text-sm sm:text-base">
                         {primaryActionLabel}
                       </Button>
                     </div>
@@ -216,8 +216,8 @@ export const DetailViewLayout = ({
 
                 {/* Description */}
                 <section>
-                  <h2 className="text-lg font-semibold mb-3">Description</h2>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">Description</h2>
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                     {description}
                   </p>
                   <button className="text-sm text-primary hover:text-primary/80 mt-2 transition-colors">
@@ -231,16 +231,16 @@ export const DetailViewLayout = ({
                 {/* Route Stats */}
                 {routeStats && routeStats.length > 0 && (
                   <section>
-                    <h2 className="text-lg font-semibold mb-4">Route details</h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Route details</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
                       {routeStats.map((stat, index) => (
                         <div
                           key={index}
-                          className="flex flex-col items-center p-4 bg-card border border-border rounded-lg"
+                          className="flex flex-col items-center p-3 sm:p-4 bg-card border border-border rounded-lg"
                         >
                           <div className="text-muted-foreground mb-1">{stat.icon}</div>
-                          <span className="text-xs text-muted-foreground">{stat.label}</span>
-                          <span className="font-semibold text-foreground">{stat.value}</span>
+                          <span className="text-xs text-muted-foreground text-center">{stat.label}</span>
+                          <span className="font-semibold text-foreground text-sm sm:text-base text-center">{stat.value}</span>
                         </div>
                       ))}
                     </div>
@@ -249,26 +249,26 @@ export const DetailViewLayout = ({
               </div>
 
               {/* Sidebar */}
-              <aside className="space-y-6">
+              <aside className="space-y-4 sm:space-y-6 min-w-0">
                 {/* Person Card */}
-                <div className="bg-card border border-border rounded-lg p-5">
-                  <h3 className="text-base font-semibold mb-4">{personLabel}</h3>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-12 w-12">
+                <div className="bg-card border border-border rounded-lg p-4 sm:p-5">
+                  <h3 className="text-sm sm:text-base font-semibold mb-3 sm:mb-4">{personLabel}</h3>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Avatar className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
                         <AvatarImage src={person.avatarUrl} alt={person.name} />
                         <AvatarFallback>
                           {person.name.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <p className="font-medium text-foreground">{person.name}</p>
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground text-sm sm:text-base truncate">{person.name}</p>
                         {person.badge && (
                           <span className="text-xs text-muted-foreground">{person.badge}</span>
                         )}
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" onClick={onMessagePerson}>
+                    <Button variant="outline" size="sm" onClick={onMessagePerson} className="text-xs sm:text-sm whitespace-nowrap">
                       Send a message
                     </Button>
                   </div>
@@ -278,22 +278,22 @@ export const DetailViewLayout = ({
                 {sidebarListSection}
 
                 {/* Discussion */}
-                <div className="bg-card border border-border rounded-lg p-5">
-                  <h3 className="text-base font-semibold mb-4">Discussion</h3>
-                  <div className="space-y-4">
+                <div className="bg-card border border-border rounded-lg p-4 sm:p-5">
+                  <h3 className="text-sm sm:text-base font-semibold mb-3 sm:mb-4">Discussion</h3>
+                  <div className="space-y-3 sm:space-y-4">
                     {displayedComments.map((comment) => (
-                      <div key={comment.id} className="flex gap-3">
-                        <Avatar className="h-8 w-8 flex-shrink-0">
+                      <div key={comment.id} className="flex gap-2 sm:gap-3">
+                        <Avatar className="h-7 w-7 sm:h-8 sm:w-8 flex-shrink-0">
                           <AvatarImage src={comment.authorAvatarUrl} alt={comment.author} />
                           <AvatarFallback className="text-xs">
                             {comment.author.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm">
+                          <p className="text-xs sm:text-sm">
                             <span className="font-medium text-primary">{comment.author}</span>
                             {' '}
-                            <span className="text-muted-foreground">{comment.content}</span>
+                            <span className="text-muted-foreground break-words">{comment.content}</span>
                           </p>
                           <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
                             <button className="text-primary hover:text-primary/80">Like</button>
@@ -308,7 +308,7 @@ export const DetailViewLayout = ({
                   </div>
                   
                   {remainingComments > 0 && (
-                    <button className="text-sm text-primary hover:text-primary/80 mt-4 transition-colors">
+                    <button className="text-sm text-primary hover:text-primary/80 mt-3 sm:mt-4 transition-colors">
                       + {remainingComments} comments
                     </button>
                   )}

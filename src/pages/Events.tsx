@@ -1,198 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ChevronDown, Mountain, Bike, Users } from "lucide-react";
+import { ChevronDown, Mountain, Bike, Users, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
-interface Event {
-  id: string;
-  time: string;
-  duration: string;
-  title: string;
-  organizer: string;
-  organizerAvatar: string;
-  image: string;
-  departureLocation: string;
-  transportMethod: string;
-  activityType: "Hiking" | "Cycling";
-  difficulty: string;
-  distance: string;
-  elevation: string;
-  totalHeight: string;
-  heightType: "height" | "descent";
-  coming: number;
-  available?: number;
-  waitlist?: number;
-  participants: string[];
-}
-
-interface EventGroup {
-  date: string;
-  events: Event[];
-}
-
-const eventGroups: EventGroup[] = [
-  {
-    date: "Tomorrow, Saturday",
-    events: [
-      {
-        id: "1",
-        time: "6:45",
-        duration: "3 days",
-        title: "A very long event name bla second line",
-        organizer: "Jessica",
-        organizerAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face",
-        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=200&h=150&fit=crop",
-        departureLocation: "Munich Hbf, pl 29",
-        transportMethod: "Train",
-        activityType: "Hiking",
-        difficulty: "T3",
-        distance: "18km",
-        elevation: "1982 elevation",
-        totalHeight: "1800 total height",
-        heightType: "height",
-        coming: 12,
-        available: 4,
-        participants: [
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=50&h=50&fit=crop&crop=face",
-        ],
-      },
-      {
-        id: "2",
-        time: "6:45",
-        duration: "12 hours",
-        title: "Rofanspitze",
-        organizer: "Helena",
-        organizerAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face",
-        image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=200&h=150&fit=crop",
-        departureLocation: "Munich",
-        transportMethod: "Carpool",
-        activityType: "Cycling",
-        difficulty: "T3",
-        distance: "18km",
-        elevation: "1982 elevation",
-        totalHeight: "1800 descent",
-        heightType: "descent",
-        coming: 20,
-        waitlist: 20,
-        participants: [
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop&crop=face",
-        ],
-      },
-      {
-        id: "3",
-        time: "6:45",
-        duration: "1 day",
-        title: "Tannheimer Berge",
-        organizer: "John Doe",
-        organizerAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-        image: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=200&h=150&fit=crop",
-        departureLocation: "Munich",
-        transportMethod: "Bus",
-        activityType: "Hiking",
-        difficulty: "T3",
-        distance: "18km",
-        elevation: "1982 elevation",
-        totalHeight: "2234 total height",
-        heightType: "height",
-        coming: 12,
-        available: 4,
-        participants: [
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop&crop=face",
-        ],
-      },
-      {
-        id: "4",
-        time: "8:00",
-        duration: "12 days",
-        title: "Event name bla second line",
-        organizer: "Freddy",
-        organizerAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face",
-        image: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=200&h=150&fit=crop",
-        departureLocation: "Munich Hbf",
-        transportMethod: "No transport",
-        activityType: "Hiking",
-        difficulty: "T3",
-        distance: "18km",
-        elevation: "1982 elevation",
-        totalHeight: "1800 descent",
-        heightType: "descent",
-        coming: 20,
-        waitlist: 20,
-        participants: [
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=50&h=50&fit=crop&crop=face",
-        ],
-      },
-    ],
-  },
-  {
-    date: "Jun 23, Sunday",
-    events: [
-      {
-        id: "5",
-        time: "6:45",
-        duration: "12 hours",
-        title: "Event name bla second line",
-        organizer: "Larissa",
-        organizerAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop&crop=face",
-        image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=200&h=150&fit=crop",
-        departureLocation: "Zurich Hbf",
-        transportMethod: "Bus",
-        activityType: "Hiking",
-        difficulty: "T3",
-        distance: "18km",
-        elevation: "1982 elevation",
-        totalHeight: "2234 total height",
-        heightType: "height",
-        coming: 12,
-        available: 4,
-        participants: [
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=50&h=50&fit=crop&crop=face",
-        ],
-      },
-      {
-        id: "6",
-        time: "6:45",
-        duration: "1 day",
-        title: "Hiking the highest peak",
-        organizer: "Laurence",
-        organizerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face",
-        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=200&h=150&fit=crop",
-        departureLocation: "Munich deutsche...",
-        transportMethod: "No transport",
-        activityType: "Hiking",
-        difficulty: "T3",
-        distance: "18km",
-        elevation: "1982 elevation",
-        totalHeight: "1800 decent",
-        heightType: "descent",
-        coming: 20,
-        waitlist: 20,
-        participants: [
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=50&h=50&fit=crop&crop=face",
-          "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=50&h=50&fit=crop&crop=face",
-        ],
-      },
-    ],
-  },
-];
+import { useEvents, Event } from "@/hooks/useEvents";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface SidebarEvent {
   date: string;
@@ -364,6 +176,38 @@ const EventRow = ({ event }: { event: Event }) => (
   </article>
 );
 
+const EventRowSkeleton = () => (
+  <article className="grid grid-cols-[80px_1fr_160px_200px_180px] gap-4 py-4 border-b border-border/50 items-start">
+    <div>
+      <Skeleton className="h-5 w-12" />
+      <Skeleton className="h-4 w-16 mt-1" />
+    </div>
+    <div className="flex gap-3">
+      <Skeleton className="w-16 h-16 rounded-lg" />
+      <div className="flex-1">
+        <Skeleton className="h-5 w-48" />
+        <Skeleton className="h-4 w-24 mt-2" />
+      </div>
+    </div>
+    <div>
+      <Skeleton className="h-4 w-24" />
+      <Skeleton className="h-4 w-16 mt-1" />
+    </div>
+    <div>
+      <Skeleton className="h-4 w-32" />
+      <Skeleton className="h-4 w-40 mt-1" />
+    </div>
+    <div className="flex flex-col items-end">
+      <Skeleton className="h-4 w-24" />
+      <div className="flex -space-x-2 mt-2">
+        <Skeleton className="w-7 h-7 rounded-full" />
+        <Skeleton className="w-7 h-7 rounded-full" />
+        <Skeleton className="w-7 h-7 rounded-full" />
+      </div>
+    </div>
+  </article>
+);
+
 const SidebarEventCard = ({ event }: { event: SidebarEvent }) => (
   <div className="flex gap-3 py-4 border-b border-border/50 last:border-0">
     <div className="text-center flex-shrink-0 w-12">
@@ -415,6 +259,8 @@ const SidebarEventCard = ({ event }: { event: SidebarEvent }) => (
 );
 
 const Events = () => {
+  const { data: eventGroups, isLoading, error } = useEvents();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -444,8 +290,31 @@ const Events = () => {
                 </div>
               </div>
 
+              {/* Loading State */}
+              {isLoading && (
+                <div className="mb-8">
+                  <div className="grid grid-cols-[80px_1fr_160px_200px_180px] gap-4 py-3 border-b border-border">
+                    <Skeleton className="h-5 w-24" />
+                    <div />
+                    <div className="text-sm text-muted-foreground">Departing from</div>
+                    <div className="text-sm text-muted-foreground">Activity</div>
+                    <div className="text-sm text-muted-foreground text-right">Participants</div>
+                  </div>
+                  {[1, 2, 3].map((i) => (
+                    <EventRowSkeleton key={i} />
+                  ))}
+                </div>
+              )}
+
+              {/* Error State */}
+              {error && (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">Failed to load events. Please try again later.</p>
+                </div>
+              )}
+
               {/* Events List */}
-              {eventGroups.map((group) => (
+              {eventGroups?.map((group) => (
                 <div key={group.date} className="mb-8">
                   {/* Date Header */}
                   <div className="grid grid-cols-[80px_1fr_160px_200px_180px] gap-4 py-3 border-b border-border">
@@ -462,6 +331,13 @@ const Events = () => {
                   ))}
                 </div>
               ))}
+
+              {/* Empty State */}
+              {!isLoading && !error && (!eventGroups || eventGroups.length === 0) && (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No upcoming events found.</p>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
@@ -478,30 +354,12 @@ const Events = () => {
                 {pastEvents.map((event, i) => (
                   <SidebarEventCard key={i} event={event} />
                 ))}
-                {/* Past event photos */}
-                <div className="flex gap-2 mt-4">
-                  <img
-                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=100&h=80&fit=crop"
-                    alt=""
-                    className="w-20 h-16 rounded-lg object-cover"
-                  />
-                  <img
-                    src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=100&h=80&fit=crop"
-                    alt=""
-                    className="w-20 h-16 rounded-lg object-cover"
-                  />
-                  <img
-                    src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=100&h=80&fit=crop"
-                    alt=""
-                    className="w-20 h-16 rounded-lg object-cover"
-                  />
-                </div>
               </div>
             </aside>
           </div>
         </div>
       </main>
-
+      
       <Footer />
     </div>
   );

@@ -50,40 +50,52 @@ export interface CreateEventFormData {
 
 const STORAGE_KEY = "create-event-draft";
 
+const defaultFormData: CreateEventFormData = {
+  activityType: null,
+  routeId: null,
+  date: null,
+  time: null,
+  eventName: "",
+  participants: null,
+  description: "",
+  hasDisclaimer: false,
+  transportOption: null,
+  publicTransport: {
+    meetingPoint: "",
+    ticketCost: "",
+    instructions: "",
+  },
+  carTransport: {
+    pickupLocation: "",
+    fuelCost: "",
+    carDescription: "",
+  },
+};
+
 const getInitialFormData = (): CreateEventFormData => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
+      // Merge with defaults to ensure nested objects exist
       return {
+        ...defaultFormData,
         ...parsed,
         date: parsed.date ? new Date(parsed.date) : null,
+        publicTransport: {
+          ...defaultFormData.publicTransport,
+          ...(parsed.publicTransport || {}),
+        },
+        carTransport: {
+          ...defaultFormData.carTransport,
+          ...(parsed.carTransport || {}),
+        },
       };
     }
   } catch (e) {
     console.error("Failed to parse saved form data", e);
   }
-  return {
-    activityType: null,
-    routeId: null,
-    date: null,
-    time: null,
-    eventName: "",
-    participants: null,
-    description: "",
-    hasDisclaimer: false,
-    transportOption: null,
-    publicTransport: {
-      meetingPoint: "",
-      ticketCost: "",
-      instructions: "",
-    },
-    carTransport: {
-      pickupLocation: "",
-      fuelCost: "",
-      carDescription: "",
-    },
-  };
+  return { ...defaultFormData };
 };
 
 // Step identifiers for the flow
@@ -177,7 +189,7 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
 
   const handleDiscard = () => {
     localStorage.removeItem(STORAGE_KEY);
-    setFormData(getInitialFormData());
+    setFormData({ ...defaultFormData });
     setCurrentStep("activity");
     setShowConfirmDialog(false);
     onOpenChange(false);

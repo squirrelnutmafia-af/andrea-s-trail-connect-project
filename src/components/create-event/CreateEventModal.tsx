@@ -16,6 +16,13 @@ import {
 import { ActivityTypeStep } from "./steps/ActivityTypeStep";
 import { RouteSelectionStep } from "./steps/RouteSelectionStep";
 import { DateTimeStep } from "./steps/DateTimeStep";
+import { EventDetailsStep } from "./steps/EventDetailsStep";
+import { EventDescriptionStep } from "./steps/EventDescriptionStep";
+import { TransportOptionsStep, TransportOption } from "./steps/TransportOptionsStep";
+import { PublicTransportStep } from "./steps/PublicTransportStep";
+import { CarTransportStep } from "./steps/CarTransportStep";
+import { EventPreviewStep } from "./steps/EventPreviewStep";
+import { toast } from "sonner";
 
 export type ActivityType = "Hiking" | "Cycling" | "Climbing" | "Skiing" | "Bouldering" | "Social";
 
@@ -24,6 +31,21 @@ export interface CreateEventFormData {
   routeId: string | null;
   date: Date | null;
   time: string | null;
+  eventName: string;
+  participants: number | null;
+  description: string;
+  hasDisclaimer: boolean;
+  transportOption: TransportOption | null;
+  publicTransport: {
+    meetingPoint: string;
+    ticketCost: string;
+    instructions: string;
+  };
+  carTransport: {
+    pickupLocation: string;
+    fuelCost: string;
+    carDescription: string;
+  };
 }
 
 const STORAGE_KEY = "create-event-draft";
@@ -46,8 +68,35 @@ const getInitialFormData = (): CreateEventFormData => {
     routeId: null,
     date: null,
     time: null,
+    eventName: "",
+    participants: null,
+    description: "",
+    hasDisclaimer: false,
+    transportOption: null,
+    publicTransport: {
+      meetingPoint: "",
+      ticketCost: "",
+      instructions: "",
+    },
+    carTransport: {
+      pickupLocation: "",
+      fuelCost: "",
+      carDescription: "",
+    },
   };
 };
+
+// Step identifiers for the flow
+type StepId = 
+  | "activity"
+  | "route"
+  | "datetime"
+  | "details"
+  | "description"
+  | "transport"
+  | "transport-public"
+  | "transport-car"
+  | "preview";
 
 interface CreateEventModalProps {
   open: boolean;
@@ -56,24 +105,50 @@ interface CreateEventModalProps {
 
 export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) {
   const [formData, setFormData] = useState<CreateEventFormData>(getInitialFormData);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState<StepId>("activity");
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
 
   // Determine if route selection step is needed
   const needsRouteStep = formData.activityType === "Hiking" || 
                          formData.activityType === "Cycling" || 
                          formData.activityType === "Climbing";
 
-  // Calculate total steps and current progress
-  const totalSteps = needsRouteStep ? 3 : 2;
-  const progressValue = (currentStep / totalSteps) * 100;
+  // Build the step flow based on selected options
+  const getStepFlow = (): StepId[] => {
+    const flow: StepId[] = ["activity"];
+    
+    if (needsRouteStep) {
+      flow.push("route");
+    }
+    
+    flow.push("datetime", "details", "description", "transport");
+    
+    if (formData.transportOption === "public") {
+      flow.push("transport-public");
+    } else if (formData.transportOption === "car") {
+      flow.push("transport-car");
+    }
+    
+    flow.push("preview");
+    
+    return flow;
+  };
+
+  const stepFlow = getStepFlow();
+  const currentStepIndex = stepFlow.indexOf(currentStep);
+  const totalSteps = stepFlow.length;
+  const progressValue = ((currentStepIndex + 1) / totalSteps) * 100;
 
   // Check if form has any data
   const hasUnsavedChanges = 
     formData.activityType !== null || 
     formData.routeId !== null || 
     formData.date !== null || 
-    formData.time !== null;
+    formData.time !== null ||
+    formData.eventName !== "" ||
+    formData.participants !== null ||
+    formData.description !== "";
 
   // Save to localStorage whenever formData changes
   useEffect(() => {
@@ -102,13 +177,8 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
 
   const handleDiscard = () => {
     localStorage.removeItem(STORAGE_KEY);
-    setFormData({
-      activityType: null,
-      routeId: null,
-      date: null,
-      time: null,
-    });
-    setCurrentStep(1);
+    setFormData(getInitialFormData());
+    setCurrentStep("activity");
     setShowConfirmDialog(false);
     onOpenChange(false);
   };
@@ -118,14 +188,20 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
   };
 
   const handleBack = () => {
-    if (currentStep > 1) {
-      // If on date step (step 3 or 2 depending on flow) and route step was skipped
-      if (!needsRouteStep && currentStep === 2) {
-        setCurrentStep(1);
-      } else if (needsRouteStep && currentStep === 3) {
-        setCurrentStep(2);
-      } else {
-        setCurrentStep(currentStep - 1);
+    const currentIndex = stepFlow.indexOf(currentStep);
+    if (currentIndex > 0) {
+      setCurrentStep(stepFlow[currentIndex - 1]);
+    }
+  };
+
+  const goToNextStep = () => {
+    const currentIndex = stepFlow.indexOf(currentStep);
+    if (currentIndex < stepFlow.length - 1) {
+      // Recalculate flow to get the correct next step
+      const newFlow = getStepFlow();
+      const newIndex = newFlow.indexOf(currentStep);
+      if (newIndex < newFlow.length - 1) {
+        setCurrentStep(newFlow[newIndex + 1]);
       }
     }
   };
@@ -135,63 +211,180 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
     
     // Determine next step based on activity
     if (activity === "Hiking" || activity === "Cycling" || activity === "Climbing") {
-      setCurrentStep(2);
+      setCurrentStep("route");
     } else {
-      // Skip route selection for Skiing, Bouldering, Social
-      setCurrentStep(needsRouteStep ? 3 : 2);
+      setCurrentStep("datetime");
     }
   };
 
   const handleRouteSelect = (routeId: string) => {
     setFormData(prev => ({ ...prev, routeId }));
-    setCurrentStep(3);
+    setCurrentStep("datetime");
   };
 
   const handleDateTimeChange = (date: Date | null, time: string | null) => {
     setFormData(prev => ({ ...prev, date, time }));
   };
 
-  const getStepTitle = () => {
+  const handleEventDetailsChange = (eventName: string, participants: number | null) => {
+    setFormData(prev => ({ ...prev, eventName, participants }));
+  };
+
+  const handleEventDescriptionChange = (description: string, hasDisclaimer: boolean) => {
+    setFormData(prev => ({ ...prev, description, hasDisclaimer }));
+  };
+
+  const handleTransportSelect = (option: TransportOption) => {
+    setFormData(prev => ({ ...prev, transportOption: option }));
+    
+    // Navigate based on selection
+    if (option === "public") {
+      setCurrentStep("transport-public");
+    } else if (option === "car") {
+      setCurrentStep("transport-car");
+    } else {
+      setCurrentStep("preview");
+    }
+  };
+
+  const handlePublicTransportChange = (meetingPoint: string, ticketCost: string, instructions: string) => {
+    setFormData(prev => ({
+      ...prev,
+      publicTransport: { meetingPoint, ticketCost, instructions }
+    }));
+  };
+
+  const handleCarTransportChange = (pickupLocation: string, fuelCost: string, carDescription: string) => {
+    setFormData(prev => ({
+      ...prev,
+      carTransport: { pickupLocation, fuelCost, carDescription }
+    }));
+  };
+
+  const handlePublish = async () => {
+    setIsPublishing(true);
+    try {
+      // TODO: Implement actual event publishing to database
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
+      
+      toast.success("Event published successfully! 🎉");
+      localStorage.removeItem(STORAGE_KEY);
+      setFormData(getInitialFormData());
+      setCurrentStep("activity");
+      onOpenChange(false);
+    } catch (error) {
+      toast.error("Failed to publish event. Please try again.");
+    } finally {
+      setIsPublishing(false);
+    }
+  };
+
+  const getStepTitle = (): string => {
     switch (currentStep) {
-      case 1:
+      case "activity":
         return "What adventure are you planning?";
-      case 2:
-        return needsRouteStep ? "Pick a route for your group" : "When are you heading out?";
-      case 3:
+      case "route":
+        return "Pick a route for your group";
+      case "datetime":
         return "When are you heading out?";
+      case "details":
+        return "Tell us about your event";
+      case "description":
+        return "Describe your adventure";
+      case "transport":
+        return "How will you get there?";
+      case "transport-public":
+        return "Public transport details";
+      case "transport-car":
+        return "Carpool details";
+      case "preview":
+        return "Review your event";
       default:
         return "";
     }
   };
 
   const renderStep = () => {
-    if (currentStep === 1) {
-      return (
-        <ActivityTypeStep 
-          selectedActivity={formData.activityType}
-          onSelect={handleActivitySelect}
-        />
-      );
+    switch (currentStep) {
+      case "activity":
+        return (
+          <ActivityTypeStep 
+            selectedActivity={formData.activityType}
+            onSelect={handleActivitySelect}
+          />
+        );
+      case "route":
+        return (
+          <RouteSelectionStep 
+            onSelect={handleRouteSelect} 
+            selectedRouteId={formData.routeId || undefined}
+          />
+        );
+      case "datetime":
+        return (
+          <DateTimeStep
+            date={formData.date}
+            time={formData.time}
+            onChange={handleDateTimeChange}
+          />
+        );
+      case "details":
+        return (
+          <EventDetailsStep
+            eventName={formData.eventName}
+            participants={formData.participants}
+            onChange={handleEventDetailsChange}
+          />
+        );
+      case "description":
+        return (
+          <EventDescriptionStep
+            description={formData.description}
+            hasDisclaimer={formData.hasDisclaimer}
+            onChange={handleEventDescriptionChange}
+          />
+        );
+      case "transport":
+        return (
+          <TransportOptionsStep
+            selected={formData.transportOption}
+            onSelect={handleTransportSelect}
+          />
+        );
+      case "transport-public":
+        return (
+          <PublicTransportStep
+            meetingPoint={formData.publicTransport.meetingPoint}
+            ticketCost={formData.publicTransport.ticketCost}
+            instructions={formData.publicTransport.instructions}
+            onChange={handlePublicTransportChange}
+          />
+        );
+      case "transport-car":
+        return (
+          <CarTransportStep
+            pickupLocation={formData.carTransport.pickupLocation}
+            fuelCost={formData.carTransport.fuelCost}
+            carDescription={formData.carTransport.carDescription}
+            onChange={handleCarTransportChange}
+          />
+        );
+      case "preview":
+        return (
+          <EventPreviewStep
+            formData={formData}
+            onPublish={handlePublish}
+            isPublishing={isPublishing}
+          />
+        );
+      default:
+        return null;
     }
-
-    if (currentStep === 2 && needsRouteStep) {
-      return (
-        <RouteSelectionStep 
-          onSelect={handleRouteSelect} 
-          selectedRouteId={formData.routeId || undefined}
-        />
-      );
-    }
-
-    // Date/Time step (step 2 for non-route activities, step 3 for route activities)
-    return (
-      <DateTimeStep
-        date={formData.date}
-        time={formData.time}
-        onChange={handleDateTimeChange}
-      />
-    );
   };
+
+  // Steps that need "Next" button (don't auto-advance)
+  const needsNextButton = ["datetime", "details", "description", "transport-public", "transport-car"].includes(currentStep);
+  const isRouteStep = currentStep === "route";
 
   return (
     <>
@@ -207,7 +400,7 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-border">
             <div className="flex items-center gap-4">
-              {currentStep > 1 && (
+              {currentStepIndex > 0 && (
                 <Button
                   variant="ghost"
                   size="icon"
@@ -219,7 +412,7 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
               )}
               <div className="flex items-center gap-3">
                 <span className="text-sm font-medium text-muted-foreground">
-                  Step {currentStep} of {totalSteps}
+                  Step {currentStepIndex + 1} of {totalSteps}
                 </span>
                 <Progress value={progressValue} className="w-24 h-2" />
               </div>
@@ -235,14 +428,27 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-hidden">
-            <div className={`mx-auto px-6 py-8 h-full ${currentStep === 2 && needsRouteStep ? 'max-w-7xl' : 'max-w-3xl py-12'}`}>
-              {!(currentStep === 2 && needsRouteStep) && (
+          <div className="flex-1 overflow-auto">
+            <div className={`mx-auto px-6 py-8 h-full ${isRouteStep ? 'max-w-7xl' : 'max-w-3xl py-12'}`}>
+              {!isRouteStep && (
                 <h1 className="text-3xl font-bold text-foreground mb-8">
                   {getStepTitle()}
                 </h1>
               )}
               {renderStep()}
+              
+              {/* Next Button for steps that need it */}
+              {needsNextButton && (
+                <div className="mt-8">
+                  <Button 
+                    onClick={goToNextStep}
+                    className="w-full h-12"
+                    size="lg"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </DialogContent>

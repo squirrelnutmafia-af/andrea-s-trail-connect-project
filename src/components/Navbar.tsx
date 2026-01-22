@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Menu, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CreateEventModal } from "@/components/create-event";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -26,7 +28,7 @@ const Navbar = () => {
             <a href="#" className="text-body hover:text-heading transition-colors font-medium">
               Community
             </a>
-            <Button variant="default" size="default">
+            <Button variant="default" size="default" onClick={() => setIsCreateEventOpen(true)}>
               Create event
             </Button>
             <button className="p-2 text-body hover:text-heading transition-colors" aria-label="Search">
@@ -64,13 +66,15 @@ const Navbar = () => {
               <a href="#" className="text-body hover:text-heading transition-colors font-medium py-2">
                 Community
               </a>
-              <Button variant="default" className="w-full mt-2">
+              <Button variant="default" className="w-full mt-2" onClick={() => setIsCreateEventOpen(true)}>
                 Create event
               </Button>
             </div>
           </div>
         )}
       </div>
+      
+      <CreateEventModal open={isCreateEventOpen} onOpenChange={setIsCreateEventOpen} />
     </nav>
   );
 };

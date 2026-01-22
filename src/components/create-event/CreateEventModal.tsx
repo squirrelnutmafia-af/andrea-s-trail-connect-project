@@ -175,7 +175,12 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
     }
 
     if (currentStep === 2 && needsRouteStep) {
-      return <RouteSelectionStep onSelect={handleRouteSelect} />;
+      return (
+        <RouteSelectionStep 
+          onSelect={handleRouteSelect} 
+          selectedRouteId={formData.routeId || undefined}
+        />
+      );
     }
 
     // Date/Time step (step 2 for non-route activities, step 3 for route activities)
@@ -230,11 +235,13 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
           </div>
 
           {/* Content */}
-          <div className="flex-1 overflow-auto">
-            <div className="max-w-3xl mx-auto px-6 py-12">
-              <h1 className="text-3xl font-bold text-foreground mb-8">
-                {getStepTitle()}
-              </h1>
+          <div className="flex-1 overflow-hidden">
+            <div className={`mx-auto px-6 py-8 h-full ${currentStep === 2 && needsRouteStep ? 'max-w-7xl' : 'max-w-3xl py-12'}`}>
+              {!(currentStep === 2 && needsRouteStep) && (
+                <h1 className="text-3xl font-bold text-foreground mb-8">
+                  {getStepTitle()}
+                </h1>
+              )}
               {renderStep()}
             </div>
           </div>

@@ -23,6 +23,10 @@ import { PublicTransportStep } from "./steps/PublicTransportStep";
 import { CarTransportStep } from "./steps/CarTransportStep";
 import { EventPreviewStep } from "./steps/EventPreviewStep";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { mockRoutes } from "@/data/mockRoutes";
+import { format } from "date-fns";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type ActivityType = "Hiking" | "Cycling" | "Climbing" | "Skiing" | "Bouldering" | "Social";
 
@@ -273,11 +277,77 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
     }));
   };
 
+  const queryClient = useQueryClient();
+
   const handlePublish = async () => {
     setIsPublishing(true);
     try {
-      // TODO: Implement actual event publishing to database
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
+      // Get route details if selected
+      const selectedRoute = formData.routeId 
+        ? mockRoutes.find(r => r.id === formData.routeId) 
+        : null;
+
+      // Build transport details JSON
+      const transportDetails = formData.transportOption === "public" 
+        ? formData.publicTransport 
+        : formData.transportOption === "car" 
+          ? formData.carTransport 
+          : null;
+
+      // Determine departure location based on transport option
+      let departureLocation = "Meet at trailhead";
+      if (formData.transportOption === "public" && formData.publicTransport.meetingPoint) {
+        departureLocation = formData.publicTransport.meetingPoint;
+      } else if (formData.transportOption === "car" && formData.carTransport.pickupLocation) {
+        departureLocation = formData.carTransport.pickupLocation;
+      }
+
+      // Map transport option to display text
+      const transportMethodMap: Record<TransportOption, string> = {
+        public: "Public Transport",
+        car: "Carpool",
+        none: "Meet at Location",
+      };
+
+      // Build event data matching the database schema
+      const eventData = {
+        title: formData.eventName || "Untitled Event",
+        event_date: formData.date ? format(formData.date, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
+        time: formData.time || "09:00",
+        duration: selectedRoute ? `${selectedRoute.duration}h` : "3h",
+        activity_type: (formData.activityType === "Hiking" || formData.activityType === "Cycling") 
+          ? formData.activityType 
+          : "Hiking" as const, // Default to Hiking for unsupported types
+        difficulty: selectedRoute?.difficulty || "intermediate",
+        distance: selectedRoute ? `${selectedRoute.distance} km` : "10 km",
+        elevation: selectedRoute ? `${selectedRoute.elevationGain}m` : "500m",
+        total_height: selectedRoute ? `${selectedRoute.elevationGain}m` : "500m",
+        height_type: "height" as const,
+        departure_location: departureLocation,
+        transport_method: formData.transportOption 
+          ? transportMethodMap[formData.transportOption] 
+          : "Meet at Location",
+        organizer: "You", // TODO: Use actual user info when auth is implemented
+        organizer_avatar: null,
+        image: selectedRoute?.imageUrl || null,
+        coming: 1, // Organizer counts as first participant
+        available: formData.participants || null,
+        participants: [],
+        description: formData.description || null,
+        has_disclaimer: formData.hasDisclaimer,
+        route_id: formData.routeId,
+        transport_details: transportDetails,
+      };
+
+      const { error } = await supabase.from("events").insert(eventData);
+
+      if (error) {
+        console.error("Error creating event:", error);
+        throw error;
+      }
+
+      // Invalidate queries to refresh the events list
+      queryClient.invalidateQueries({ queryKey: ["events"] });
       
       toast.success("Event published successfully! 🎉");
       localStorage.removeItem(STORAGE_KEY);
@@ -285,6 +355,7 @@ export function CreateEventModal({ open, onOpenChange }: CreateEventModalProps) 
       setCurrentStep("activity");
       onOpenChange(false);
     } catch (error) {
+      console.error("Failed to publish event:", error);
       toast.error("Failed to publish event. Please try again.");
     } finally {
       setIsPublishing(false);

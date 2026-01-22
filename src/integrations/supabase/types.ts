@@ -21,20 +21,24 @@ export type Database = {
           coming: number
           created_at: string
           departure_location: string
+          description: string | null
           difficulty: string
           distance: string
           duration: string
           elevation: string
           event_date: string
+          has_disclaimer: boolean
           height_type: Database["public"]["Enums"]["height_type"]
           id: string
           image: string | null
           organizer: string
           organizer_avatar: string | null
           participants: string[] | null
+          route_id: string | null
           time: string
           title: string
           total_height: string
+          transport_details: Json | null
           transport_method: string
           updated_at: string
           waitlist: number | null
@@ -45,20 +49,24 @@ export type Database = {
           coming?: number
           created_at?: string
           departure_location: string
+          description?: string | null
           difficulty: string
           distance: string
           duration: string
           elevation: string
           event_date: string
+          has_disclaimer?: boolean
           height_type?: Database["public"]["Enums"]["height_type"]
           id?: string
           image?: string | null
           organizer: string
           organizer_avatar?: string | null
           participants?: string[] | null
+          route_id?: string | null
           time: string
           title: string
           total_height: string
+          transport_details?: Json | null
           transport_method: string
           updated_at?: string
           waitlist?: number | null
@@ -69,20 +77,24 @@ export type Database = {
           coming?: number
           created_at?: string
           departure_location?: string
+          description?: string | null
           difficulty?: string
           distance?: string
           duration?: string
           elevation?: string
           event_date?: string
+          has_disclaimer?: boolean
           height_type?: Database["public"]["Enums"]["height_type"]
           id?: string
           image?: string | null
           organizer?: string
           organizer_avatar?: string | null
           participants?: string[] | null
+          route_id?: string | null
           time?: string
           title?: string
           total_height?: string
+          transport_details?: Json | null
           transport_method?: string
           updated_at?: string
           waitlist?: number | null
@@ -97,7 +109,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      activity_type: "Hiking" | "Cycling"
+      activity_type:
+        | "Hiking"
+        | "Cycling"
+        | "Climbing"
+        | "Skiing"
+        | "Bouldering"
+        | "Social"
       height_type: "height" | "descent"
     }
     CompositeTypes: {
@@ -226,7 +244,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      activity_type: ["Hiking", "Cycling"],
+      activity_type: [
+        "Hiking",
+        "Cycling",
+        "Climbing",
+        "Skiing",
+        "Bouldering",
+        "Social",
+      ],
       height_type: ["height", "descent"],
     },
   },
